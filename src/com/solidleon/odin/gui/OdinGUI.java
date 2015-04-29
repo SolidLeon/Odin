@@ -79,8 +79,8 @@ public class OdinGUI extends JFrame {
 			businessNamePanel.add(lblBusiness);
 			
 			JCheckBox chkManager = new JCheckBox("Manager -" + (1.0 - b.managerMod.doubleValue()) + "%");
-			chkManager.setSelected(b.manager);
-			chkManager.addActionListener(e -> b.manager = chkManager.isSelected());
+			chkManager.setSelected(b.isManager());
+			chkManager.addActionListener(e -> b.setManager(chkManager.isSelected()));
 			businessNamePanel.add(chkManager);
 		}
 		

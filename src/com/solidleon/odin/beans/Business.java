@@ -13,16 +13,39 @@ public class Business {
 	public BigDecimal managerMod;
 	
 	// RUNTIME DATA
-	public boolean manager = false;
+	private int count = 0;
+	private boolean manager = false;
 	public boolean running = false;
 	public long elapsedTime;
 	private BigDecimal profitPerSecond;
+	private BigDecimal currentProfit = null;
+	
+	public void setManager(boolean manager) {
+		this.manager = manager;
+		calculateCurrentProfit();
+	}
+	public void setCount(int count) {
+		this.count = count;
+		calculateCurrentProfit();
+	}
+	public int getCount() {
+		return count;
+	}
+	public boolean isManager() {
+		return manager;
+	}
+	
+	private void calculateCurrentProfit() {
+		currentProfit = baseProfit;
+		currentProfit = currentProfit.multiply(new BigDecimal(Integer.toString(count)));
+		if (manager)
+			currentProfit = currentProfit.multiply(managerMod);
+	}
 	
 	public BigDecimal getProfit() {
-		BigDecimal profit = baseProfit;
-		if (manager)
-			profit = profit.multiply(managerMod);
-		return profit;
+		if (currentProfit == null)
+			calculateCurrentProfit();
+		return currentProfit;
 	}
 	
 	

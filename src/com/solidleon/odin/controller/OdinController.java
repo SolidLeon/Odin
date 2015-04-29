@@ -19,6 +19,7 @@ public class OdinController {
 		b.managerMod = new BigDecimal("0.75");
 		b.name = "Lemonade Stand";
 		b.duration = 1000;
+		b.setCount(5);
 		world.business.add(b);
 		Business b2 = new Business();
 		b2.basePrice = new BigDecimal("10");
@@ -48,7 +49,7 @@ public class OdinController {
 			lastUpdate = now;
 			for (int i = 0; i < world.business.size(); i++) {
 				Business b = world.business.get(i);
-				if (b.manager) b.running = true;
+				if (b.isManager()) b.running = true;
 				if (b.running) {
 					wtBusinessUpdate(b, delta);
 				}
