@@ -12,6 +12,7 @@ public class Business {
 	public long duration;
 	
 	// RUNTIME DATA
+	public boolean running = false;
 	public long elapsedTime;
 	private BigDecimal profitPerSecond;
 	
