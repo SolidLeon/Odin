@@ -16,12 +16,14 @@ public class OdinController {
 		Business b = new Business();
 		b.basePrice = new BigDecimal("10");
 		b.baseProfit = new BigDecimal("10");
+		b.managerMod = new BigDecimal("0.75");
 		b.name = "Lemonade Stand";
 		b.duration = 1000;
 		world.business.add(b);
 		Business b2 = new Business();
 		b2.basePrice = new BigDecimal("10");
 		b2.baseProfit = new BigDecimal("500");
+		b2.managerMod = new BigDecimal("0.50");
 		b2.name = "News Stand";
 		b2.duration = 2000;
 		world.business.add(b2);
@@ -46,6 +48,7 @@ public class OdinController {
 			lastUpdate = now;
 			for (int i = 0; i < world.business.size(); i++) {
 				Business b = world.business.get(i);
+				if (b.manager) b.running = true;
 				if (b.running) {
 					wtBusinessUpdate(b, delta);
 				}
@@ -57,7 +60,7 @@ public class OdinController {
 		b.elapsedTime += delta;
 		if (b.elapsedTime > b.duration) {
 			b.elapsedTime -= b.duration;
-			world.cash = world.cash.add(b.baseProfit);
+			world.cash = world.cash.add(b.getProfit());
 			b.running = false;
 		}
 	}
