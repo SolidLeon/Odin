@@ -12,6 +12,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -56,7 +57,7 @@ public class OdinGUI extends JFrame {
 		JPanel centerPanel = new JPanel(new BorderLayout());
 		add(new JScrollPane(centerPanel));
 		
-		JPanel businessNamePanel = new JPanel(new GridLayout(con.world.business.size(), 1));
+		JPanel businessNamePanel = new JPanel(new GridLayout(con.world.business.size(), 2));
 		centerPanel.add(businessNamePanel);
 		for (int i = 0; i < con.world.business.size(); i++) {
 			Business b = con.world.business.get(i);
@@ -73,9 +74,14 @@ public class OdinGUI extends JFrame {
 					b.running = true;
 				}
 			});
-			continueUpdateList.add(new JLabelUpdate(lblBusiness, e -> e.setText(String.format("%s %s/%ds (%s/s)", b.name, nf.format(b.baseProfit), b.duration, nf.format(b.getProfitPerSecond())))));
+			continueUpdateList.add(new JLabelUpdate(lblBusiness, e -> e.setText(String.format("%s %s/%ds (%s/s)", b.name, nf.format(b.getProfit()), b.duration, nf.format(b.getProfitPerSecond())))));
 			continueRepaintList.add(lblBusiness);
 			businessNamePanel.add(lblBusiness);
+			
+			JCheckBox chkManager = new JCheckBox("Manager -" + (1.0 - b.managerMod.doubleValue()) + "%");
+			chkManager.setSelected(b.manager);
+			chkManager.addActionListener(e -> b.manager = chkManager.isSelected());
+			businessNamePanel.add(chkManager);
 		}
 		
 		

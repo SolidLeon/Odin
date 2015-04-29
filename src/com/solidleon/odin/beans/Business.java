@@ -10,20 +10,26 @@ public class Business {
 	public BigDecimal basePrice;
 	public BigDecimal baseProfit;
 	public long duration;
+	public BigDecimal managerMod;
 	
 	// RUNTIME DATA
+	public boolean manager = false;
 	public boolean running = false;
 	public long elapsedTime;
 	private BigDecimal profitPerSecond;
+	
+	public BigDecimal getProfit() {
+		BigDecimal profit = baseProfit;
+		if (manager)
+			profit = profit.multiply(managerMod);
+		return profit;
+	}
 	
 	
 	public BigDecimal getProfitPerSecond() {
 		if (profitPerSecond == null) {
 			BigDecimal biDuration = new BigDecimal(Double.toString(duration / 1000.0));
-			profitPerSecond = baseProfit.divide(biDuration);
-			System.out.println(baseProfit);
-			System.out.println(biDuration);
-			System.out.println(profitPerSecond);
+			profitPerSecond = getProfit().divide(biDuration);
 		}
 		return profitPerSecond;
 	}
