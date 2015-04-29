@@ -63,4 +63,9 @@ public class Business {
 		price = price.multiply(new BigDecimal("1.1").pow((count + amount)));
 		return price;
 	}
+	public int getMaxAffordable(BigDecimal cash) {
+		// TODO since we use doubleValue we are not longer able to support real large numbers...
+		int max = (int) (1.1 * Math.log(basePrice.multiply(cash).doubleValue()));
+		return 0;
+	}
 }

@@ -3,6 +3,7 @@ package com.solidleon.odin.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
@@ -58,8 +59,14 @@ public class OdinGUI extends JFrame {
 		JPanel centerPanel = new JPanel(new BorderLayout());
 		add(new JScrollPane(centerPanel));
 		
-		JPanel businessNamePanel = new JPanel(new GridLayout(con.world.business.size(), 3));
-		centerPanel.add(businessNamePanel);
+		JPanel businessNamePanel = new JPanel(new GridLayout(con.world.business.size(), 1));
+		JPanel businessManagerPanel = new JPanel(new GridLayout(con.world.business.size(), 1));
+		JPanel businessControlsPanel = new JPanel(new GridLayout(con.world.business.size(), 1));
+		JPanel centerFlow = new JPanel(new FlowLayout());
+		centerPanel.add(centerFlow);
+		centerFlow.add(businessNamePanel);
+		centerFlow.add(businessManagerPanel);
+		centerFlow.add(businessControlsPanel);
 		for (int i = 0; i < con.world.business.size(); i++) {
 			Business b = con.world.business.get(i);
 			JLabel lblBusiness = new JLabel(b.name) {
@@ -75,17 +82,17 @@ public class OdinGUI extends JFrame {
 					b.running = true;
 				}
 			});
-			continueUpdateList.add(new JLabelUpdate(lblBusiness, e -> e.setText(String.format("%s %s/%ds (%s/s)", b.name, nf.format(b.getProfit()), b.duration, nf.format(b.getProfitPerSecond())))));
+			continueUpdateList.add(new JLabelUpdate(lblBusiness, e -> e.setText(String.format("%d %s %s/%ds (%s/s)", b.getCount(), b.name, nf.format(b.getProfit()), b.duration, nf.format(b.getProfitPerSecond())))));
 			continueRepaintList.add(lblBusiness);
 			businessNamePanel.add(lblBusiness);
 			
 			JCheckBox chkManager = new JCheckBox("Manager -" + (1.0 - b.managerMod.doubleValue()) + "%");
 			chkManager.setSelected(b.isManager());
 			chkManager.addActionListener(e -> b.setManager(chkManager.isSelected()));
-			businessNamePanel.add(chkManager);
+			businessManagerPanel.add(chkManager);
 			
 			JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
-			businessNamePanel.add(buttonPanel);
+			businessControlsPanel.add(buttonPanel);
 			JButton buttonBuy1 = new JButton("1");
 			new javax.swing.Timer(10, e -> buttonBuy1.setText("1 " + nf.format(b.getPrice(1)))).start();
 			buttonBuy1.addActionListener(e -> buy(b, 1));
@@ -99,7 +106,7 @@ public class OdinGUI extends JFrame {
 			buttonBuy100.addActionListener(e -> buy(b, 100));
 			buttonPanel.add(buttonBuy100);
 			JButton buttonBuyMax = new JButton("Max");
-			new javax.swing.Timer(10, e -> buttonBuyMax.setText("? " + nf.format(b.getPrice(1)))).start();
+			new javax.swing.Timer(10, e -> buttonBuyMax.setText(b.getMaxAffordable(con.world.cash) + " " + nf.format(b.getPrice(b.getMaxAffordable(con.world.cash))))).start();
 			buttonBuyMax.addActionListener(e -> buy(b, -1));
 			buttonPanel.add(buttonBuyMax);
 		}
