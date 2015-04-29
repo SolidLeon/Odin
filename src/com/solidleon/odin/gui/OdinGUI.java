@@ -12,6 +12,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -57,7 +58,7 @@ public class OdinGUI extends JFrame {
 		JPanel centerPanel = new JPanel(new BorderLayout());
 		add(new JScrollPane(centerPanel));
 		
-		JPanel businessNamePanel = new JPanel(new GridLayout(con.world.business.size(), 2));
+		JPanel businessNamePanel = new JPanel(new GridLayout(con.world.business.size(), 3));
 		centerPanel.add(businessNamePanel);
 		for (int i = 0; i < con.world.business.size(); i++) {
 			Business b = con.world.business.get(i);
@@ -82,6 +83,25 @@ public class OdinGUI extends JFrame {
 			chkManager.setSelected(b.isManager());
 			chkManager.addActionListener(e -> b.setManager(chkManager.isSelected()));
 			businessNamePanel.add(chkManager);
+			
+			JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
+			businessNamePanel.add(buttonPanel);
+			JButton buttonBuy1 = new JButton("1");
+			new javax.swing.Timer(10, e -> buttonBuy1.setText("1 " + nf.format(b.getPrice(1)))).start();
+			buttonBuy1.addActionListener(e -> buy(b, 1));
+			buttonPanel.add(buttonBuy1);
+			JButton buttonBuy5 = new JButton("5");
+			new javax.swing.Timer(10, e -> buttonBuy5.setText("5 " + nf.format(b.getPrice(5)))).start();
+			buttonBuy5.addActionListener(e -> buy(b, 5));
+			buttonPanel.add(buttonBuy5);
+			JButton buttonBuy100 = new JButton("100");
+			new javax.swing.Timer(10, e -> buttonBuy100.setText("100 " + nf.format(b.getPrice(100)))).start();
+			buttonBuy100.addActionListener(e -> buy(b, 100));
+			buttonPanel.add(buttonBuy100);
+			JButton buttonBuyMax = new JButton("Max");
+			new javax.swing.Timer(10, e -> buttonBuyMax.setText("? " + nf.format(b.getPrice(1)))).start();
+			buttonBuyMax.addActionListener(e -> buy(b, -1));
+			buttonPanel.add(buttonBuyMax);
 		}
 		
 		
@@ -104,6 +124,10 @@ public class OdinGUI extends JFrame {
 		
 		new javax.swing.Timer(10, e -> continueRepaintList.forEach(component -> component.repaint())).start();
 		new javax.swing.Timer(10, e -> continueUpdateList.forEach(update -> update.action.update(update.lbl))).start();
+	}
+	
+	private void buy(Business b, int count) {
+		con.buy(b, count);
 	}
 	
 }

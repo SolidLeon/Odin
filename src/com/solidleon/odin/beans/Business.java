@@ -56,4 +56,11 @@ public class Business {
 		}
 		return profitPerSecond;
 	}
+	public BigDecimal getPrice(int amount) {
+		BigDecimal price = basePrice;
+		//c = count
+		//p(x) = basePrice * (1.10^(c+x))
+		price = price.multiply(new BigDecimal("1.1").pow((count + amount)));
+		return price;
+	}
 }

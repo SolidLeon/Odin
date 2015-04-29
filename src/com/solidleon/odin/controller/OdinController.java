@@ -74,5 +74,13 @@ public class OdinController {
 		
 		return profitPerSecond;
 	}
+
+	public void buy(Business b, int count) {
+		BigDecimal price = b.getPrice(count);
+		if (price.compareTo(world.cash) <= 0) {
+			b.setCount(b.getCount() + count);
+			world.cash = world.cash.subtract(price);
+		}
+	}
 	
 }
