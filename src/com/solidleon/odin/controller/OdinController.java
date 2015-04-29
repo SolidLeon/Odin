@@ -46,7 +46,9 @@ public class OdinController {
 			lastUpdate = now;
 			for (int i = 0; i < world.business.size(); i++) {
 				Business b = world.business.get(i);
-				wtBusinessUpdate(b, delta);
+				if (b.running) {
+					wtBusinessUpdate(b, delta);
+				}
 			}
 		}
 	}
@@ -56,6 +58,7 @@ public class OdinController {
 		if (b.elapsedTime > b.duration) {
 			b.elapsedTime -= b.duration;
 			world.cash = world.cash.add(b.baseProfit);
+			b.running = false;
 		}
 	}
 

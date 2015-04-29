@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,11 @@ public class OdinGUI extends JFrame {
 					super.paintComponent(g);
 				}
 			};
+			lblBusiness.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					b.running = true;
+				}
+			});
 			continueUpdateList.add(new JLabelUpdate(lblBusiness, e -> e.setText(String.format("%s %s/%ds (%s/s)", b.name, nf.format(b.baseProfit), b.duration, nf.format(b.getProfitPerSecond())))));
 			continueRepaintList.add(lblBusiness);
 			businessNamePanel.add(lblBusiness);
